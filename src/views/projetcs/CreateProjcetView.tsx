@@ -1,9 +1,14 @@
 import ProjectForm from "@/components/projects/ProjectForm";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom"
-import { ProjectFormData } from "types";
+import {toast} from "react-toastify";
+import { Link, useNavigate } from "react-router-dom"
+import { ProjectFormData } from "@/types/index";
+import { createProject } from "@/api/ProjectAPI";
+import { useMutation } from "@tanstack/react-query";
 
 function CreateProjcetView() {
+
+  const navigate = useNavigate();
 
   const initialValues : ProjectFormData= {
       projectName:  "",
@@ -13,9 +18,19 @@ function CreateProjcetView() {
 
   const {register, handleSubmit, formState:{errors}} =  useForm({defaultValues:initialValues});
 
-  const handleForm =  (data:ProjectFormData)=>{
-    console.log(data)
-  };
+  const {mutate} =  useMutation({
+    mutationFn: createProject,
+    onError: (error)=>{
+      toast.error(error.message);
+    },
+    onSuccess : (data)=>{
+      toast.success(data);
+    
+      navigate('/');
+    },
+  });
+
+  const handleForm = (formData:ProjectFormData)=> mutate(formData);
 
   return (
     <>
@@ -42,6 +57,7 @@ function CreateProjcetView() {
           className="mt-10 bg-white shadow-lg p-10 rounded-lg"
           onSubmit={handleSubmit(handleForm)}
           noValidate  
+          // method="POST"
         >
           <ProjectForm
             register={register}
