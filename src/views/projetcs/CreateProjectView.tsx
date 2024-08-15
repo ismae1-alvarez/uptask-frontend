@@ -6,7 +6,7 @@ import { ProjectFormData } from "@/types/index";
 import { createProject } from "@/api/ProjectAPI";
 import { useMutation } from "@tanstack/react-query";
 
-function CreateProjcetView() {
+function CreateProjecttView() {
 
   const navigate = useNavigate();
 
@@ -74,4 +74,4 @@ function CreateProjcetView() {
     </>
   )
 }
-export default CreateProjcetView
+export default CreateProjecttView
