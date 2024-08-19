@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-
 /** Auth & Users */
 
 const authSchema = z.object({
@@ -69,3 +68,15 @@ export const dashboardProjectSchema = z.array(
 
 export type Project = z.infer<typeof projectSchema>;
 export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description' >;
+
+
+/**Team */
+
+const teamMemberSchema = userSchema.pick({
+    name:true,
+    email:true,
+    _id:true
+});
+
+export type TeamMember = z.infer<typeof teamMemberSchema>;
+export type TeamMemberForm = Pick<TeamMember, 'email'>;
