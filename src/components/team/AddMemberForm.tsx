@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ErrorMessage from "../ErrorMessage";
 import { TeamMemberForm } from "@/types/index";
-import { findUserByEmail } from "@/api/TeamAPU";
+import { findUserByEmail } from "@/api/TeamAPI";
 import SearchResult from "./SearchResult";
 
 export default function AddMemberForm() {
