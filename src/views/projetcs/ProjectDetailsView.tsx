@@ -3,10 +3,15 @@ import AddTaskModal from "@/components/tasks/AddTaskModal";
 import EditTaskData from "@/components/tasks/EditTaskData";
 import TaskList from "@/components/tasks/TaskList";
 import TaskModalDetails from "@/components/tasks/TaskModalDetails";
+import { useAuth } from "@/hooks/useAuth";
+import { isManager } from "@/utils/policies";
 import {  useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 function ProjectDetailsView() {
+
+
+  const { data:user,isLoading:login } = useAuth();
 
   const navigate =  useNavigate();
   const params = useParams();
@@ -20,10 +25,10 @@ function ProjectDetailsView() {
     retry: false
   });
 
-  if(isLoading) return 'Cargando....';
+  if(isLoading && login) return 'Cargando....';
   if(isError) return <Navigate to='/404'/>
 
-  if(data)return (
+  if(data && user)return (
     <>
         <h1 className="text-4xl font-black">
             {data.projectName}
@@ -31,6 +36,8 @@ function ProjectDetailsView() {
         <p className="text-2xl font-light text-gray-500 mt-5 ">
             {data.description}
         </p>
+        
+        {isManager(data.manager, user._id) && (
 
         <nav className="my-5 flex gap-3">
             <button
@@ -47,6 +54,8 @@ function ProjectDetailsView() {
                 Colaboradoeres
             </Link>
         </nav>
+        )}
+
 
         <TaskList
           tasks={data.tasks}

@@ -36,7 +36,7 @@ export default function AddTaskModal() {
             toast.error(error.message);
         },
         onSuccess:(data)=>{
-            queryClient.invalidateQueries({queryKey: ['editProject', projectId]});
+            queryClient.invalidateQueries({queryKey: ['project', projectId]});
             toast.success(data);
             reset();
             navigate(location.pathname, {replace:true});
@@ -51,7 +51,7 @@ export default function AddTaskModal() {
         mutate(data)
     };
 
-    return (
+     return (
         <>
             <Transition appear show={show} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, {replace:true})}>
