@@ -33,11 +33,11 @@ export default function TaskModalDetails() {
 
     const { mutate } =  useMutation({
         mutationFn : updateTaskStatus, 
-        onError : (error)=>{
-            toast.error(error?.message);
+        onError : ( error )=>{
+            toast.error( error.message );
         },
-        onSuccess :(data)=>{
-            toast.success(data);
+        onSuccess :( data )=>{
+            toast.success( data );
             queryClient.invalidateQueries({queryKey: ['project', projectId]});
             queryClient.invalidateQueries({queryKey: ['task', taskId]});
         },
@@ -93,7 +93,22 @@ export default function TaskModalDetails() {
                                         className="font-black text-4xl text-slate-600 my-5"
                                     >{data.name}
                                     </Dialog.Title>
+
                                     <p className='text-lg text-slate-500 mb-2'>Descripción: {data.description}</p>
+                                    
+                                    <p className='text-xl text-slate-500 mb-2'>Historial de cambios</p>
+
+                                    <ul className='list-decimal'>
+                                        {data.completedBy.map((data) =>(
+                                            <li key={data._id}>
+                                                <span>
+                                                    {statusTranslations[data.status]}
+                                                </span> {''} por : {''}
+                                                {data.user.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Estado Actual:</label>
                                         <select 
