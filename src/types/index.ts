@@ -29,7 +29,17 @@ export const userSchema = authSchema.pick({
 
 export type User =  z.infer<typeof userSchema>;
 
+/** Notes */
+const noteSchema =  z.object({
+    _id : z.string(),
+    content : z.string(),
+    createdBy : userSchema,
+    task: z.string(),
+    createdAt : z.string(),
+});
 
+export type Note = z.infer<typeof noteSchema>;
+export type NoteFormData =  Pick<Note, 'content'>;
 
 
 /** Tasks */
@@ -47,6 +57,9 @@ export const taskSchema = z.object({
         user: userSchema,
         status: taskStatusSchema
     })), 
+    notes : z.array( noteSchema.extend({
+        createdBy: userSchema 
+    })),
     createdAt : z.string(),
     updatedAt : z.string(),
 });

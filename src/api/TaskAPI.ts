@@ -29,6 +29,7 @@ export async function getTaskById({projectId, taskId}: Pick<TaskApi, 'projectId'
 
         const response = taskSchema.safeParse( data );
         
+        
         if( response.success ) return response.data;
 
     } catch (error) {

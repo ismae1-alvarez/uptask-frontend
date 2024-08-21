@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { formaDate } from '@/utils/utils';
 import { statusTranslations } from '@/locales/es';
 import { TaskStatus } from '@/types/index';
+import NotesPanel from '../notes/NotesPanel';
 
 
 export default function TaskModalDetails() {
@@ -95,19 +96,23 @@ export default function TaskModalDetails() {
                                     </Dialog.Title>
 
                                     <p className='text-lg text-slate-500 mb-2'>Descripción: {data.description}</p>
-                                    
-                                    <p className='text-xl text-slate-500 mb-2'>Historial de cambios</p>
 
-                                    <ul className='list-decimal'>
-                                        {data.completedBy.map((data) =>(
-                                            <li key={data._id}>
-                                                <span>
-                                                    {statusTranslations[data.status]}
-                                                </span> {''} por : {''}
-                                                {data.user.name}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    {data.completedBy.length ? (
+                                        <>
+                                            <p className='font-bold text-2xl text-slate-600 my-5'>Historial de cambios</p>
+
+                                            <ul className='list-decimal'>
+                                                {data.completedBy.map((data) =>(
+                                                    <li key={data._id}>
+                                                        <span>
+                                                            {statusTranslations[data.status]}
+                                                        </span> {''} por : {''}
+                                                        {data.user.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
+                                    ) : null}
 
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Estado Actual:</label>
@@ -123,6 +128,12 @@ export default function TaskModalDetails() {
 
                                         </select>
                                     </div>
+
+                                    <NotesPanel
+                                        notes={data.notes} 
+                                    />
+
+
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
