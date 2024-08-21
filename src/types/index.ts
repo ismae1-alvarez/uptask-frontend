@@ -19,6 +19,8 @@ export type ForgotPasswordForm = Pick<Auth,  'email' >;
 export type NewPasswordForm = Pick<Auth,  'password' | 'password_confirmation' >;
 export type UpdateCurrentUserPasswordForm = Pick<Auth,  'current_password' |'password' | 'password_confirmation' >;
 export type ConfirmToken = Pick<Auth, 'token'>;
+export type CheckPassword = Pick<Auth, 'password'>;
+
 
 /** Users */
 

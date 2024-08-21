@@ -1,14 +1,17 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
-import { deleteProjec, getProject } from "@/api/ProjectAPI";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { getProject } from "@/api/ProjectAPI";
+import {  useQuery  } from "@tanstack/react-query";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { isManager } from "@/utils/policies";
+import DeleteProjectModal from "@/components/projects/DeleteProjectModal";
 
 const DashboardView = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { data:user,isLoading:login } = useAuth();
 
@@ -16,19 +19,7 @@ const DashboardView = () => {
     queryKey: ["projects"],
     queryFn: getProject,
   });
-
-  const queryClient = useQueryClient();
-  const {mutate} = useMutation({
-    mutationFn : deleteProjec,
-    onError : (error)=>{
-      toast.error(error.message);
-    },
-    onSuccess :(data)=>{
-      toast.success(data);
-      queryClient.invalidateQueries({queryKey : ["projects"]});
-    }
-  });
-
+  
   if ( isLoading && login) return "Cargando...";
 
 
@@ -124,7 +115,7 @@ const DashboardView = () => {
                               <button
                                 type="button"
                                 className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                onClick={() => mutate(project._id)}
+                                onClick={() => navigate(location.pathname + `?deleteProject=${project._id}`)}
                               >
                                 Eliminar Proyecto
                               </button>
@@ -148,6 +139,8 @@ const DashboardView = () => {
             </Link>
           </p>
         )}
+
+        <DeleteProjectModal/>
       </>
     );
 };
